@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
+
 </head>
 
 <body>
@@ -57,32 +58,62 @@
         <iframe src="main_count.html" frameborder="0" id="main_frame" name="main_frame" frameborder="0"
             scrolling="auto"></iframe>
     </div>
+    退出提示
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">提示</h4>
+                </div>
+                <div class="modal-body">
+                    <p id="errorText">确定退出吗？</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button id="ensure" type="button" class="btn btn-primary">确定</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <script src="js/lib/jquery-1.12.4.min.js"></script>
+    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
+    <script src="./js/utils/config.js"></script>
     <script src="./js/utils/user.js"></script>
     <script>
         // 退出功能
         // 点击退出，返回登录页面
         // 1、绑定点击事件
         $('#quit').click(function () {
+            $('#myModal').modal('show');
             // 判断是否退出
-            if (confirm('确定退出吗？')) {
-                // 确定
-                // 调用方法
+            $('#ensure').on('click',function(){
                 user.quit_user(function (res) {
                     console.log(res);
                     if (res.code == 200) {
                         window.location.href = './login.html';
                     }
                 });
+            })
+            // if (confirm('确定退出吗？')) {
+            //     // 确定
+            //     // 调用方法
+            //     user.quit_user(function (res) {
+            //         console.log(res);
+            //         if (res.code == 200) {
+            //             window.location.href = './login.html';
+            //         }
+            //     });
 
-                // $.post('http://localhost:8000/admin/logout', function (res) {
-                //     console.log(res);
-                //     if (res.code == 200) {
-                //         window.location.href = './login.html';
-                //     }
-                // });
-            }
+            //     // $.post('http://localhost:8000/admin/logout', function (res) {
+            //     //     console.log(res);
+            //     //     if (res.code == 200) {
+            //     //         window.location.href = './login.html';
+            //     //     }
+            //     // });
+            // }
         });
 
         // 获取管理员的信息
