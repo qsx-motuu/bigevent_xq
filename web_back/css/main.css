@@ -413,4 +413,18 @@ body{
 }
 
 
+/* 新添的样式 */
+
+.main_wrap .prompt{
+    width: 200px;
+    height: 40px;
+    line-height: 40px;
+    /* background-color: #ccc; */
+    position: absolute;
+    top:247px;
+    left: 585px;
+    color: #6ac6e2;
+    display: none;
+}
+
 

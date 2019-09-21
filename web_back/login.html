@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" type="text/css" href="css/iconfont.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="./js/bootstrap/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -23,14 +24,74 @@
             <form class="login_form">
                 <i class="iconfont icon-user"></i>
                 <i class="iconfont icon-key"></i>
-                <input type="text" class="input_txt" placeholder="邮箱/手机号">
-                <input type="password" class="input_pass" placeholder="密码">
-                <input type="submit" class="input_sub" value="登 录">
+                <input id="userName" type="text" class="input_txt" placeholder="邮箱/手机号">
+                <input id="passWord" type="password" class="input_pass" placeholder="密码">
+                <input id="btn" type="button" class="input_sub" value="登 录">
             </form>
         </div>
+        <!-- 登录成功的提示 -->
+        <div id="prompt" class="prompt">
+            <i>登录成功，三秒后跳转页面……</i>
+        </div>
+    </div>
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">错误提示</h4>
+            </div>
+            <div class="modal-body">
+              <p id="errorText"></p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+          </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+      </div><!-- /.modal -->
 
-    </div> 
+    <script src="./js/lib/jquery-1.12.4.min.js"></script>
+    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
 
+    <script>
+        // 网页登录
+        //点击按钮，获取用户信息和密码，判断是否正确，返回值
+
+        // 1、绑定点击事件
+        $('#btn').click(function () {
+            // 2、获取用户信息
+            var userName = $('#userName').val();
+            var passWord = $('#passWord').val();
+            console.log(userName, passWord);
+            //判断收集的信息
+            if (userName == '' || passWord == '') {
+                $('#myModal').modal('show');
+                $('#errorText').html('请重新输入！');
+            } else {
+                //设置接口，发送请求
+                $.post('http://localhost:8000/admin/login', { user_name: userName, password: passWord }, function (res) {
+                    console.log(res);
+                    if(res.code == 200){
+                        // 显示提示信息
+                        $('#prompt').css('display','block');
+                        setInterval(function(){
+                            window.location.href = './index.html';
+                        },3000);
+                    }else {
+                        $('#myModal').modal('show');
+                        $('#errorText').html(res.msg);
+                        userName = $('#userName').val('');
+                        passWord = $('#passWord').val('');
+                    }
+                });
+            }
+
+
+        });
+
+
+    </script>
 </body>
 
 </html>
