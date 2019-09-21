@@ -17,7 +17,7 @@
         <a href="#" class="logo"><img src="images/logo02.png" alt="logo"></a>
         <div class="user_info">
             <img id="userImg" src="images/2.jpg" alt="person">
-            <span>欢迎&nbsp;&nbsp;<i id="userName"    style="font-style: normal" ></i></span>
+            <span>欢迎&nbsp;&nbsp;<i id="userName" style="font-style: normal"></i></span>
             <b>管理员</b>
         </div>
         <div class="menu">
@@ -48,7 +48,7 @@
         </form>
         <div class="user_center_link">
             <a href="user.html" onclick="setMenu(3,0)" target="main_frame">个人中心</a>
-            <img src="images/2.jpg" alt="person">
+            <img id="userImg1" src="images/2.jpg" alt="person">
             <a id="quit" href="#"><i class="iconfont icon-tuichu"></i> 退出</a>
         </div>
     </div>
@@ -59,6 +59,7 @@
     </div>
 
     <script src="js/lib/jquery-1.12.4.min.js"></script>
+    <script src="./js/utils/user.js"></script>
     <script>
         // 退出功能
         // 点击退出，返回登录页面
@@ -67,34 +68,47 @@
             // 判断是否退出
             if (confirm('确定退出吗？')) {
                 // 确定
-                $.post('http://localhost:8000/admin/logout', function (res) {
+                // 调用方法
+                user.quit_user(function (res) {
                     console.log(res);
                     if (res.code == 200) {
                         window.location.href = './login.html';
                     }
                 });
+
+                // $.post('http://localhost:8000/admin/logout', function (res) {
+                //     console.log(res);
+                //     if (res.code == 200) {
+                //         window.location.href = './login.html';
+                //     }
+                // });
             }
         });
 
         // 获取管理员的信息
         // 网页进入后，实时获取用户信息
         $(function () {
-            $.get('http://localhost:8000/admin/getuser', function (res) {
+            // 调用方法
+            user.getInfo(function (res) {
                 console.log(res);
                 if (res.code == 200) {
                     $('#userName').html(res.data.nickname);
                     $('#userImg').attr('src', res.data.user_pic);
+                    $('#userImg1').attr('src', res.data.user_pic);
                 }
-
             });
+            // $.get('http://localhost:8000/admin/getuser', function (res) {
+            //     console.log(res);
+            //     if (res.code == 200) {
+            //         $('#userName').html(res.data.nickname);
+            //         $('#userImg').attr('src', res.data.user_pic);
+            //         $('#userImg1').attr('src', res.data.user_pic);
+            //     }
+
+            // });
         })
 
     </script>
-
-
-
-
-
 
     <script>
         var $level01 = $('.level01');
