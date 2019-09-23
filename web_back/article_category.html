@@ -56,7 +56,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"></button>
-                    <h4 class="modal-title">新增分类</h4>
+                    <h4 class="modal-title" id="title">新增分类</h4>
                 </div>
                 <div class="modal-body">
                     <form>
@@ -68,6 +68,7 @@
                             <label for="message-text" class="control-label">分类别名:</label>
                             <input type="text" class="form-control" id="recipient_slug">
                         </div>
+                        <input type="hidden" name="" id="category_id">
                     </form>
                     <!-- 添加失败的提示 -->
                     <div id="prompt" class="prompt" style="display: none">
@@ -145,6 +146,7 @@
     </script>
 
     <script>
+        var flag = true;//默认是添加
         /*网页加载完成后，请求接口，获取文章类别数据*/
         function getCategory() {
             // 调用接口，获取数据
@@ -166,6 +168,9 @@
             $('#recipient_name').val('');
             $('#recipient_slug').val('');
             $('#prompt').hide();
+            flag = true;
+            $('#model_add').text('新增');
+            $('#title').text('新增分类');
 
         })
         //点击新增按钮，获取用户输入信息，调用接口，发送请求。
@@ -179,19 +184,39 @@
             if (classname === '' || slug === '') {
                 $('#prompt').show().text('分类名称和分类别名不能为空');
             } else {
-                // 调用接口
-                category.add(classname, slug, function (res) {
-                    // console.log(res);
-                    if (res.code === 200) {
-                        // 提示信息隐藏
-                        $('#prompt').hide();
-                        // 添加的模态框隐藏
-                        $('#addModal').modal('hide');
-                        getCategory();
-                    } else {
-                        $('#prompt').show().text(res.msg);
-                    }
-                });
+                if (flag) {
+                    // 调用接口
+                    category.add(classname, slug, function (res) {
+                        // console.log(res);
+                        if (res.code === 200) {
+                            // 提示信息隐藏
+                            $('#prompt').hide();
+                            // 添加的模态框隐藏
+                            $('#addModal').modal('hide');
+                            getCategory();
+                        } else {
+                            $('#prompt').show().text(res.msg);
+                        }
+                    });
+                }
+                else {
+                    // 调用接口
+
+                    var id = $('#category_id').text();
+                    category.edit(id, classname, slug, function (res) {
+                        // console.log(res);
+                        if (res.code === 200) {
+                            // 提示信息隐藏
+                            $('#prompt').hide();
+                            // 添加的模态框隐藏
+                            $('#addModal').modal('hide');
+                            getCategory();
+                        } else {
+                            $('#prompt').show().text(res.msg);
+                        }
+                    });
+                }
+
             }
 
         });
@@ -210,7 +235,19 @@
             });
         }
         // 编辑
-        
+        function editTr(obj) {
+            console.log(obj);
+            $('#addModal').modal('show');
+            $('#title').text('编辑分类');
+            $('#recipient_name').val(obj.name);
+            $('#recipient_slug').val(obj.slug);
+            $('#model_add').text('保存');
+            $('#category_id').text(obj.id);
+            flag = false;
+            // category.edit(obj.id,obj.name,obj.slug,function(res){
+            //     console.log(res);
+            // })
+        }
 
     </script>
 
