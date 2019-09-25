@@ -14,5 +14,5 @@ var URLIST = {
   article_show:BASE_URL+'/admin/search',
   article_add:BASE_URL+'/admin/article_publish',
   article_del:BASE_URL+'/admin/article_delete',
-  article_edit:BASE_URL+'/admin/article_edit'
+  article_edit:BASE_URL+'/admin/article_publish'
 };
