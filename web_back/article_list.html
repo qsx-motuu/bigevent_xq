@@ -23,18 +23,18 @@
                 <div class="col-xs-6">
                     <form class="form-inline">
                         <select id="selCategory" name="" class="form-control input-sm">
-                            <option>所有分类</option>
+                            <!-- <option>所有分类</option>
                             <option>未分类</option>
                             <option>奇趣事</option>
                             <option>会生活</option>
-                            <option>爱旅行</option>
+                            <option>爱旅行</option> -->
                         </select>
                         <select id="selStatus" name="" class="form-control input-sm">
-                            <option>所有状态</option>
-                            <option value="drafted">草稿</option>
-                            <option value="published">已发布</option>
+                            <option value="">所有状态</option>
+                            <option value="草稿">草稿</option>
+                            <option value="已发布">已发布</option>
                         </select>
-                        <button id="btnSearch" class="btn btn-default btn-sm">筛选</button>
+                        <button id="btnSearch" type="button" class="btn btn-default btn-sm">筛选</button>
                     </form>
                 </div>
                 <div class="col-xs-6">
@@ -54,7 +54,7 @@
                     </tr>
                 </thead>
                 <tbody id="search">
-                    <tr>
+                    <!-- <tr>
                         <td>王积千造统最头</td>
                         <td>杰克</td>
                         <td>奇趣事</td>
@@ -64,7 +64,7 @@
                             <a href="article_edit.html" class="btn btn-default btn-xs">编辑</a>
                             <a href="javascript:deleteTr( 1005 );" class="btn btn-danger btn-xs">删除</a>
                         </td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
             <div class="row text-center">
@@ -109,10 +109,11 @@
     <script src="./js/bootstrap/js/bootstrap.min.js"></script>
     <script src="./js/utils/config.js"></script>
     <script src="./js/utils/article.js"></script>
+    <script src="./js/utils/category.js"></script>
     <script src="./js/lib/template-web.js"></script>
     <script src="./js/lib/jquery.twbsPagination.min.js"></script>
 
-    <!-- 模板引擎 -->
+    <!-- 模板引擎 文章 -->
     <script id="tmp" type="text/html">
         {{each data item}}
         <tr>
@@ -129,6 +130,13 @@
         {{/each}}
 
     </script>
+    <script id="tmp1" type="text/html">
+        <option value="">所有分类</option>
+        {{each data item}}
+        <option value="{{item.id}}">{{item.name}}</option>
+        {{/each}}
+    
+    </script>
     <script>
         // 设置左侧菜单
         $('#release_btn').click(function () {
@@ -138,17 +146,50 @@
         //页面加载完成后，显示文章列表信息
         $(function () {
             var currentPage = 1;// 保存用户点击的页码
+            var type = ''; //文章类型编号
+            var state = '';//文章状态
+            var totalPage = '';//总页数
+
 
 
             // 调用函数
             getShow();
+
+            //筛选
+            category.show(function (res) {
+                console.log(res);
+                $('#selCategory').html(template('tmp1', res));
+
+            });
+
+            $('#btnSearch').click(function () {
+                //获取下拉列表中的信息
+                type = $('#selCategory').val();
+                state = $('#selStatus').val();
+                console.log(type, state);
+                // 强制在第一页显示
+                currentPage = 1;// 保存用户点击的页码
+                // 再次查询
+                getShow();
+            })
+
+            // 显示文章函数
             function getShow() {
                 //发送请求，获取文章信息
-                article.show({ page: currentPage }, function (res) {
+                article.show({ type: type, state: state, page: currentPage }, function (res) {
                     console.log(res);
                     if (res.code === 200) {
                         var htmlStr = template('tmp', res);
                         $('#search').html(htmlStr);
+                        // 初始化分页
+                        // 筛选时，当前总页数和获取的总页数不同时
+                        // 然后更新总页数
+                        if (totalPage != res.totalPage) {
+                            totalPage = res.totalPage;
+                            // 销毁分页
+                            $('.pagination').twbsPagination('destroy');
+                        }
+
                         // 分页插件
                         $('.pagination').twbsPagination({
                             // currentPage: 1,  // 初始页
