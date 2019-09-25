@@ -10,5 +10,9 @@ var URLIST = {
   category_delete: BASE_URL + '/admin/category_delete',
   category_edit: BASE_URL + '/admin/category_edit',
   
- 
+  // 文章类别
+  article_show:BASE_URL+'/admin/search',
+  article_add:BASE_URL+'/admin/article_publish',
+  article_del:BASE_URL+'/admin/article_delete',
+  article_edit:BASE_URL+'/admin/article_edit'
 };
