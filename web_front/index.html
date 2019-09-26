@@ -55,7 +55,7 @@
 
     <div class="main_con clearfix">
         <div class="left_con">
-            <ul class="focus_list">
+            <ul class="focus_list" id="getAndShow">
                 <li class="first">
                     <a href="#"><img src="images/pic01.jpg" alt=""></a>
                     <p>图片说明</p>
@@ -215,11 +215,50 @@
             <span>|</span>
             <a href="#">招聘人才</a>
             <span>|</span>
-            <a href="#">友情链接</a>		
+            <a href="#">友情链接</a>
         </div>
-        <p>CopyRight © 2019 深圳大事件信息技术股份有限公司   All Rights Reserved</p>
-        <p>电话：0755-****888    粤ICP备*******8号</p>
+        <p>CopyRight © 2019 深圳大事件信息技术股份有限公司 All Rights Reserved</p>
+        <p>电话：0755-****888 粤ICP备*******8号</p>
     </div>
+
+    <script src="./js/jquery-1.12.4.min.js"></script>
+    <script src="./js/utils/config.js"></script>
+    <script src="./js/utils/article.js"></script>
+    <script src="./js/utils/comment.js"></script>
+    <script src="./js/template-web.js"></script>
+
+    <!-- 模板引擎 -->
+    <script id="tmp" type="text/html">
+    {{each data item index}}
+        {{if index == 0}}
+        <li class="first">
+            <a href="./article.html?id={{item.id}}"><img src="{{item.cover}}" alt="{{item.title}}"></a>
+            <p>{{item.title}}</p>
+        </li>
+        {{else}}
+            <li>
+                <a href="./article.html?id={{item.id}}"><img src="{{item.cover}}" alt="{{item.title}}"></a>
+                <p>{{item.title}}</p>
+            </li>
+        {{/if}}
+    {{/each}}
+    </script>
+
+    <script>
+        // 显示新闻列表
+        $(function () {
+            article.show({ perpage: 5 }, function (res) {
+                console.log(res);
+                $('#getAndShow').html(template('tmp',res))
+
+            });
+
+        })
+
+
+    </script>
+
+
 
 </body>
 
