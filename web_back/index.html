@@ -10,8 +10,7 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
-
-</head>
+    
 
 <body>
     <div class="sider">
@@ -78,118 +77,7 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
-    <script src="js/lib/jquery-1.12.4.min.js"></script>
-    <script src="./js/bootstrap/js/bootstrap.min.js"></script>
-    <script src="./js/utils/config.js"></script>
-    <script src="./js/utils/user.js"></script>
-    <script>
-        // 退出功能
-        // 点击退出，返回登录页面
-        // 1、绑定点击事件
-        $('#quit').click(function () {
-            $('#myModal').modal('show');
-            // 判断是否退出
-            $('#ensure').on('click',function(){
-                user.quit_user(function (res) {
-                    console.log(res);
-                    if (res.code == 200) {
-                        window.location.href = './login.html';
-                    }
-                });
-            })
-            // if (confirm('确定退出吗？')) {
-            //     // 确定
-            //     // 调用方法
-            //     user.quit_user(function (res) {
-            //         console.log(res);
-            //         if (res.code == 200) {
-            //             window.location.href = './login.html';
-            //         }
-            //     });
-
-            //     // $.post('http://localhost:8000/admin/logout', function (res) {
-            //     //     console.log(res);
-            //     //     if (res.code == 200) {
-            //     //         window.location.href = './login.html';
-            //     //     }
-            //     // });
-            // }
-        });
-
-        // 获取管理员的信息
-        // 网页进入后，实时获取用户信息
-        $(function () {
-            // 调用方法
-            user.getInfo(function (res) {
-                console.log(res);
-                if (res.code == 200) {
-                    $('#userName').html(res.data.nickname);
-                    $('#userImg').attr('src', res.data.user_pic);
-                    $('#userImg1').attr('src', res.data.user_pic);
-                }
-            });
-            // $.get('http://localhost:8000/admin/getuser', function (res) {
-            //     console.log(res);
-            //     if (res.code == 200) {
-            //         $('#userName').html(res.data.nickname);
-            //         $('#userImg').attr('src', res.data.user_pic);
-            //         $('#userImg1').attr('src', res.data.user_pic);
-            //     }
-
-            // });
-        })
-
-    </script>
-
-    <script>
-        var $level01 = $('.level01');
-        var $subli = $('.level02 li')
-        $level01.click(function () {
-            $level01.not($(this)).removeClass('active');
-            $(this).addClass('active');
-
-            if ($(this).next().hasClass('level02')) {
-                $(this).next().slideToggle();
-                $(this).find('b').toggleClass('rotate0');
-            } else {
-                $subli.removeClass('active');
-            }
-        })
-
-        $subli.click(function () {
-            $subli.not($(this)).removeClass('active');
-            $(this).addClass('active');
-
-            if (!$(this).parent().prev().hasClass('active')) {
-                $level01.removeClass('active');
-                $(this).parent().prev().addClass('active');
-            }
-        })
-
-        function resizeFrame() {
-            var frame_w = $('#main_body').outerWidth();
-            var frame_h = $('#main_body').outerHeight();
-            $('#main_frame').css({ 'width': frame_w, 'height': frame_h });
-        }
-
-        resizeFrame();
-
-        $(window).resize(function () {
-            resizeFrame();
-        })
-
-
-        function setMenu(m, n) {
-            $level01.eq(m).addClass('active').siblings().not('.level02').removeClass('active');
-            if (m != 1) {
-                $('.level02').slideUp();
-            } else {
-                $('.level02').slideDown();
-                $('.level02').children().eq(n).addClass('active').siblings().removeClass('active');
-            }
-        }
-
-    </script>
+  <script data-main="./js/pages/index.js" src="./js/lib/require.js"></script>
 
 </body>
 

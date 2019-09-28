@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
-    <script src="js/lib/jquery-1.12.4.min.js"></script>
-    <script src="js/bootstrap/js/bootstrap.min.js"></script>
+   
+   
 </head>
 
 <body>
@@ -29,15 +29,7 @@
                     </tr>
                 </thead>
                 <tbody id="tableContent">
-                    <!-- <tr>
-                        <td>奇趣事</td>
-                        <td>funny</td>
-                        <td class="text-center">
-                            <a href="javascript:editTr({&quot;id&quot;:&quot;2&quot;,&quot;slug&quot;:&quot;funny&quot;,&quot;name&quot;:&quot;奇趣事&quot;});"
-                                class="btn btn-info btn-xs">编辑</a>
-                            <a href="javascript:deleteTr( 2 );" class="btn btn-danger btn-xs">删除</a>
-                        </td>
-                    </tr> -->
+                  
                 </tbody>
                 <tfoot>
                     <tr>
@@ -102,15 +94,15 @@
     </div><!-- /.modal -->
 
     <script>
-        $('#addModal').modal({
-            show: false,
-            backdrop: false
-        });
+        // $('#addModal').modal({
+        //     show: false,
+        //     backdrop: false
+        // });
 
-        $('#model_shutoff').click(function () {
-            // alert('shutoff');
-            $('#addModal').modal('hide');
-        });
+        // $('#model_shutoff').click(function () {
+        //     // alert('shutoff');
+        //     $('#addModal').modal('hide');
+        // });
 
         // $('#model_add').click(function () {
         //     // alert('add');
@@ -124,12 +116,8 @@
         //       }
         //   })      
     </script>
-
-
-    <script src="./js/utils/config.js"></script>
-    <script src="./js/utils/category.js"></script>
-    <script src="./js/lib/template-web.js"></script>
-
+    
+    <script data-main="./js/pages/article_category.js" src="./js/lib/require.js"></script>
     <script id="tmp" type="text/html">
         {{each data item}}
         <tr>
@@ -145,111 +133,8 @@
     
     </script>
 
-    <script>
-        var flag = true;//默认是添加
-        /*网页加载完成后，请求接口，获取文章类别数据*/
-        function getCategory() {
-            // 调用接口，获取数据
-            category.show(function (res) {
-                console.log(res);
-                // 使用模板引擎来拼接字符串
-                // var htmlStr = template('tmp',res);
-                // console.log(htmlStr);
-                $('#tableContent').html(template('tmp', res));
-            })
-        }
 
-        $(function () {//入口函数
-            getCategory();
-        });
-        /************************新增分类******************************/
-        // 清空列表中的值
-        $('#btnShowAddModal').click(function () {
-            $('#recipient_name').val('');
-            $('#recipient_slug').val('');
-            $('#prompt').hide();
-            flag = true;
-            $('#model_add').text('新增');
-            $('#title').text('新增分类');
-
-        })
-        //点击新增按钮，获取用户输入信息，调用接口，发送请求。
-        $('#model_add').click(function () {
-            // alert(1);
-            // 获取用户输入的信息
-            var classname = $('#recipient_name').val();
-            var slug = $('#recipient_slug').val();
-            // console.log(classname,slug);
-            // 简单判断
-            if (classname === '' || slug === '') {
-                $('#prompt').show().text('分类名称和分类别名不能为空');
-            } else {
-                if (flag) {
-                    // 调用接口
-                    category.add(classname, slug, function (res) {
-                        // console.log(res);
-                        if (res.code === 200) {
-                            // 提示信息隐藏
-                            $('#prompt').hide();
-                            // 添加的模态框隐藏
-                            $('#addModal').modal('hide');
-                            getCategory();
-                        } else {
-                            $('#prompt').show().text(res.msg);
-                        }
-                    });
-                }
-                else {
-                    // 调用接口
-
-                    var id = $('#category_id').text();
-                    category.edit(id, classname, slug, function (res) {
-                        // console.log(res);
-                        if (res.code === 200) {
-                            // 提示信息隐藏
-                            $('#prompt').hide();
-                            // 添加的模态框隐藏
-                            $('#addModal').modal('hide');
-                            getCategory();
-                        } else {
-                            $('#prompt').show().text(res.msg);
-                        }
-                    });
-                }
-
-            }
-
-        });
-        /***********************编辑删除功能******************************/
-        // 删除
-        function deleteTr(id) {
-            $('#myModal').modal('show');
-            $('#ensure').on('click', function () {
-                category.delete(id, function (res) {
-                    console.log(res);
-                    if (res.code === 200) {
-                        getCategory();
-                    }
-                    $('#myModal').modal('hide');
-                });
-            });
-        }
-        // 编辑
-        function editTr(obj) {
-            console.log(obj);
-            $('#addModal').modal('show');
-            $('#title').text('编辑分类');
-            $('#recipient_name').val(obj.name);
-            $('#recipient_slug').val(obj.slug);
-            $('#model_add').text('保存');
-            $('#category_id').text(obj.id);
-            flag = false;
-            // category.edit(obj.id,obj.name,obj.slug,function(res){
-            //     console.log(res);
-            // })
-        }
-
-    </script>
+      
 
 </body>
 

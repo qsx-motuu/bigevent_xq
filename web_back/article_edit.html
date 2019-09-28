@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,10 +10,11 @@
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
     <link type="text/css" rel="stylesheet" href="js/jedate/css/jedate.css">
-    <script src="js/lib/jquery-1.12.4.min.js"></script>
+    <!-- <script src="js/lib/jquery-1.12.4.min.js"></script> -->
     <script src="js/jedate/js/jedate.js"></script>
     <script src="js/tinymce/js/tinymce/tinymce.min.js"></script>
     <script src="js/tinymce/js/tinymce_setup.js"></script>
+
 </head>
 
 <body>
@@ -78,100 +78,15 @@
 
 
 
-    <script src="./js/utils/config.js"></script>
-    <script src="./js/utils/article.js"></script>
-    <script src="./js/utils/category.js"></script>
-    <script src="./js/lib/template-web.js"></script>
-
     <script id="tmp" type="text/html">
     {{each data item}}
          <option value="{{item.id}}">{{item.name}}</option>
     {{/each}}
     </script>
 
-    <script>
-        function getID(str) {
-            var obj = {};
-            var arr = str.split('&');
-            arr.forEach(function (item) {
-                var arr1 = item.split('=');
-                obj[arr1[0]] = arr1[1];
-            });
-            //    console.log(obj);
 
-            return obj;
-            //    console.log(id);
+    <script src="./js/lib/require.js" data-main="./js/pages/article_edit.js"></script>
 
-        }
-
-        $(function () {
-            // 获取id值
-            var str = window.location.search.replace('?', '');
-            //  console.log(str);
-            var obj = getID(str);
-            var id = obj.id;
-
-            getAndShow(id);
-            $('#btnAdd').click(function () {
-                // 获取表单信息
-                var fd = new FormData($('#myForm')[0]);
-                // 添加一个私有属性
-                fd.append('id',id);
-                // 修改属性
-                fd.set('content', tinyMCE.activeEditor.getContent()); 
-
-                article.diet(fd,function(res){
-                    console.log(res);
-                    if(res.code===200){
-                        alert('修改成功');
-                        window.location.href = './article_list.html';
-                    }else{
-                        alert('修改失败');
-                    }
-                    
-                });
-
-
-                // article.diet(fd,function(res){
-                //     console.log(res);
-
-                // })
-            });
-
-            function getAndShow(id) {
-                if (isNaN(id)) {
-                    alert('id不对');
-                } else {
-                    // 显示修改的文章
-                    article.show({ id: id }, function (res) {
-                        console.log(res);
-                        if (res.code === 200) {
-                            // 显示类别
-                            var type = res.data.type
-                            category.show(function (res) {
-                                // 模板引擎
-                                $('#selCategory').html(template('tmp', res));
-                                $('#selCategory').val(type);
-                            });
-                            $('#article_title').val(res.data.title);
-                            $('#article_cover').attr('src', res.data.cover);
-                            $('#dateinput').val(res.data.date);
-
-                            setTimeout(function () {
-                                // 如果不设置延迟，可能会报错。报错的原因是tinyMCE还没有准备就绪，就给它设置了内容
-                                tinyMCE.activeEditor.setContent(res.data.content);
-                            }, 1000);
-                        }
-                    });
-
-                }
-            }
-
-        });
-
-
-
-    </script>
 
 </body>
 
